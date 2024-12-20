@@ -5,6 +5,8 @@ exit 0
 #This Solution
 # 1) Use : -pattern_type glob  then use -i 'Pattern*.jpg' 
 # 2) Expand you glob with ARG_MAX
+    getconf ARG_MAX
+    echo '>$' ulimit -s 65536
 # 3) notice the sensor sizes. Some of those attempts are examples.
 
 # A Better Solution for the future
