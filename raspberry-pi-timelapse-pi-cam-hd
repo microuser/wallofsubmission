@@ -1,0 +1,326 @@
+#!/bin/bash
+#cat ~/Documents/timelapse.sh
+
+exit 0
+#one must understand this script
+#This solution
+# 1) Captures the linux date, year, and all into variables.
+# 2) We then use that for shutter and gain calculations
+# 3) A tuning file for imx477 is needed to be downloaded on your own. its its the some one for pi cam hd
+# 4) a still picture is taken
+# 5) the desktop is set to the picture just taken. on XFCE pcmanfm
+
+
+#
+#
+#
+#
+#Available controls:
+#   AeEnable : [false..true]
+#   ExposureTime : [114..694422939]
+#   NoiseReductionMode : [0..4]
+ #  FrameDurationLimits : [100000..694434742]
+#   ColourCorrectionMatrix : [-16.000000..16.000000]
+    #Saturation : [0.000000..32.000000]
+#    AeMeteringMode : [0..3]
+    #Contrast : [0.000000..32.000000]
+    #ExposureValue : [-8.000000..8.000000]
+    #AwbMode : [0..7]
+   # AeConstraintMode : [0..3]
+  #  ScalerCrop : [(0, 0)/64x64..(0, 0)/4056x3040]
+ #   AnalogueGain : [1.000000..22.260870]
+#    ColourGains : [0.000000..32.000000]
+#    Brightness : [-1.000000..1.000000]
+#    AeExposureMode : [0..3]
+#    AwbEnable : [false..true]
+#    Sharpness : [0.000000..16.000000]
+
+#
+#
+#
+export title='DCIM'
+export starttime=`date +"%Y%m%d%H%M%S"` 
+export timefolder="/home/user/Pictures/$title" #$starttime"
+mkdir -v -p $timefolder
+#export previewargs='--vflip --hflip --nopreview' 
+#export previewargs='--vflip --hflip  --denoise cdn_hq --nopreview  --quality 98' 
+#--timelapse --denoise cdn_hq  --ev 0 --brightness 0.1 --contrast 1.0 --awb cloudy --metering centre --nopreview
+#export previewargs='--vflip --hflip  --quality 98  --nopreview --immediate 1 --shutter 2400 --ev 0.001 --timelapse 250 --timeout 500' #--shutter 1200 --contrast 1.2 --brightness 0'
+#--saturation 100
+#--contrast 1 --brightness 0 
+
+
+
+#32000
+#0.01
+#
+#
+
+ # $ --awbgains 2.2,2.3 '
+
+# --awb cloudy
+#not working 
+#--shutter 240 # max shutter pi2 HD = 670.73 s # also some say IMX417 is 230ms
+
+# pi resolution 4056 x 3040  IMX477 
+
+# vid 2028x1080p60    2028x1520p40 1332x990p120
+#12 mega
+
+
+#export manual_building_clouds='--vflip --hflip --quality 98 --nopreview --shutter 32000 --gain 0.1  --timeout 16000'
+
+
+#export manual2previewargs='--vflip --hflip --quality 98 --nopreview --shutter 2000 --timeout 8000 --gain 30 --denoise cdn_hq --sharpness 1 --exposure normal --roi 0,0,0,0 '
+#export manual-night='--vflip --hflip --quality 98 --nopreview --shutter 24000  --timeout 60000 --gain 10 --denoise cdn_hq --sharpness 1 --exposure normal --roi 0,0,0,0 '
+
+#$ --timeout 64000
+#export previewargs='--vflip --hflip --quality 98 --nopreview --shutter 1200000  --denoise cdn_hq --sharpness 1 --exposure normal --roi 0,0,0,0 '
+
+
+#export previewargs='--vflip --hflip --quality 98 --nopreview --shutter 2400000 --gain 0 --denoise cdn_hq --sharpness 1 --exposure normal --roi 0,0,0,0 '
+
+
+#24 seconds
+ export previewargs='--vflip --hflip --quality 98 --nopreview --shutter 24000000 --gain 0 --denoise cdn_hq --sharpness 1 --exposure normal --roi 0,0,0,0 '
+ 
+ export previewargs='--vflip --hflip --quality 98 --nopreview --shutter 24000000 --gain 1 --verbose --exposure normal --roi 0,0,0,0 '
+
+#32 second blue sky night building
+ export previewargs='--vflip --hflip --quality 98 --nopreview --shutter 32000000 --ev -7.8 --gain 1 --verbose --exposure normal --roi 0,0,0,0 '
+
+
+#48 second blue sky night building
+ export previewargs='--vflip --hflip --quality 98 --nopreview --shutter 48000000 --ev -8 --gain 1 --verbose --exposure normal --roi 0,0,0,0  --awbgains 0,0 '
+ #pretty night
+ export previewargs='--vflip --hflip --quality 98 --nopreview --immediate --shutter 48000000 --ev -8 --gain 1 --verbose --exposure normal --roi 0,0,0,0  --awbgains 0,0 --denoise cdn_hq --sharpness 1 --saturation 1 --contrast 1 --brightness 0 '
+ 
+ #64 second fixing whitebalance at night
+ 
+ #blue sky
+ export previewargs='--vflip --hflip --quality 98 --nopreview --immediate --shutter 64000000 --ev -8 --gain 1 --verbose --exposure normal --roi 0,0,0,0  --awbgains 1.2,1.2 --denoise cdn_hq --sharpness 1 --saturation 1 --contrast 1 --brightness 0 '
+ #green sky and all is green
+ export previewargs='--vflip --hflip --quality 98 --nopreview --immediate --shutter 64000000 --ev -8 --gain 1 --verbose --exposure normal --roi 0,0,0,0  --awbgains 1.8,1.8 --denoise cdn_hq --sharpness 1 --saturation 1 --contrast 1 --brightness 0 '
+ 
+ #purple sky
+ export previewargs='--vflip --hflip --quality 98 --nopreview --immediate --shutter 64000000 --ev -8 --gain 1 --verbose --exposure normal --roi 0,0,0,0  --awbgains 2.3,2.3 --denoise cdn_hq --sharpness 1 --saturation 1 --contrast 1 --brightness 0 '
+ 
+ # --denoise cdn_hq 
+ export previewargs='--vflip --hflip --quality 98 --width 4056 --height 3040 --nopreview --immediate --shutter 1000000 --ev 0 --gain 1 --verbose --exposure normal --roi 0,0,0,0  --awb fluorescent --sharpness 1 --saturation 1 --contrast 1 --brightness 0 '
+ 
+ export previewargs='--vflip --hflip --quality 98 --width 4056 --height 3040 --nopreview --immediate --shutter 1000000 --ev 0 --gain 1 --verbose --exposure normal --roi 0,0,0,0  --awb daylight --sharpness 1 --saturation 1 --contrast 1 --brightness 0 '
+ export previewargs='--vflip --hflip --quality 98 --width 4056 --height 3040 --nopreview --immediate --shutter 1000000 --ev 0 --gain 1 --verbose --exposure normal --roi 0,0,0,0  --awb indoor --sharpness 1 --saturation 1 --contrast 1 --brightness 0 '
+ 
+ #auto, incandescent, tungsten, fluorescent, indoor, daylight,   #cloudy, custom
+ export previewargs='--vflip --hflip --quality 98 --width 4056 --height 3040 --nopreview --immediate --shutter 1000000 --ev 0 --gain 1 --verbose --exposure normal --roi 0,0,0,0  --awb cloudy --sharpness 1 --saturation 1 --contrast 1 --brightness 0 '
+ export previewargs='--vflip --hflip --quality 98 --width 4056 --height 3040 --nopreview --immediate --shutter 1000000 --ev 0 --gain 1 --verbose --exposure normal --roi 0,0,0,0  --awb incandescent --sharpness 1 --saturation 1 --contrast 1 --brightness 0 '
+ export previewargs='--vflip --hflip --quality 98 --width 4056 --height 3040 --nopreview --immediate --shutter 1000000 --ev 0 --gain 1 --verbose --exposure normal --roi 0,0,0,0  --awb tungsten --sharpness 1 --saturation 1 --contrast 1 --brightness 0 '
+ 
+ #12 seconds
+ export previewargs='--vflip --hflip --quality 98 --width 4056 --height 3040 --nopreview --immediate --shutter 12000000 --ev 0 --gain 1 --verbose --exposure normal --roi 0,0,0,0  --awb tungsten --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 1'
+ 
+ #16 seconds
+ export previewargs='--vflip --hflip --quality 98 --width 4056 --height 3040 --nopreview --immediate --shutter 16000000 --ev 0 --gain 1 --verbose --exposure normal --roi 0,0,0,0  --awb fluorescent --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 1'
+ 
+ #32 seconds, 8 of them in 240 sec susposidly?
+ # '--framerate 0.01 --timelapse 1 --datetime 1 --timeout 240000'
+ export previewargs='--vflip --hflip --quality 92 --width 4056 --height 3040 --nopreview --immediate --shutter 32000000 --ev 0 --gain 1 --verbose --exposure normal --roi 0,0,0,0  --awb daylight --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 0 '
+ 
+ export previewargs='--vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate --shutter 64000000 --ev 0 --gain 1 --verbose --exposure normal --roi 0,0,0,0  --awb daylight --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 0 '
+ export previewargs='--vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate --shutter 64000000 --ev 0 --gain 1 --verbose --exposure normal --roi 0,0,0,0  --awb daylight --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 0 '
+
+#longer exposures
+#min exposure 114
+#max exposure 694422939
+#             694 422 939
+# 64 seconds: 64 000 000
+ export previewargs='--vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate --shutter 64000000 --ev 0 --gain 1 --verbose --exposure normal --roi 0,0,0,0  --awb daylight --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 0 '
+ 
+ #is this 120 seconds? or some reduces?
+ export previewargs='--vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate --shutter 120000000 --ev 0 --gain 1 --verbose 3 --exposure normal --roi 0,0,0,0  --awb daylight --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 0 '
+ 
+ #240 with reduced ev and crazy more
+ export previewargs='--vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate --shutter 240000000 --ev -2 --gain 1 --verbose 3 --exposure normal --roi 0,0,0,0  --awb daylight --sharpness 1 --saturation 1 --contrast 1.1 --brightness 0 --encoding jpg --raw 0 '
+ 
+ #480 with more reduced ev 
+ export previewargs='--vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate --shutter 480000000 --ev -8 --gain 1 --verbose 3 --exposure normal --roi 0,0,0,0  --awb daylight --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 1 '
+ export previewargs='--vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate --shutter 480000000 --ev -8 --gain 1 --verbose 3 --exposure normal --roi 0,0,0,0  --awb daylight --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 1 '
+#   AnalogueGain : [1.000000..22.260870]
+#    ColourGains : [0.000000..32.000000]
+
+ 
+ #666 000 000 is kinda near
+ #694 422 939
+ #max is 670 ish sec from data sheet .                                                                                                             
+  #shutter: 1.2e+08 
+ #choosing 690 000 000 beacuse it is under x < 694 422 939
+ export previewargs='--vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate --shutter 690000000 --ev -8 --gain 1 --awbgains 1,1 --verbose 3 --exposure normal --roi 0,0,0,0  --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 1 --buffer-count 2 '
+ export previewargs='--vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate --shutter 690000000 --ev -8 --gain 1 --awbgains 1.5,2 --verbose 3 --exposure normal --roi 0,0,0,0  --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 1 --buffer-count 2 '
+ 
+ #its bright for night. adding imx477
+ export previewargs='--vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate --shutter 6900000 --ev 0 --gain 1 --awbgains 1,1 --verbose 3 --exposure normal --roi 0,0,0,0  --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 0 '
+ 
+ #looks gren
+ export previewargs='--vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate --shutter 6900000 --ev 0 --gain 1 --awbgains 1,1 --verbose 3 --exposure normal --roi 0,0,0,0  --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 0 '
+ 
+ 
+ export previewargs='--vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate --shutter 6900000 --ev 0 --gain 12 --awbgains 2.1,2.3 --verbose 3 --exposure normal --roi 0,0,0,0  --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 0 '
+ 
+ export previewargs='--vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate --shutter 6900000 --ev 0 --gain 18 --awbgains 3.2,2 --verbose 3 --exposure normal --roi 0,0,0,0  --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 0 '
+ 
+ #over exposed pink
+ export previewargs='--vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate --shutter 69000000 --ev 0 --gain 18 --awbgains 3.2,2 --verbose 3 --exposure normal --roi 0,0,0,0  --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 0 '
+ 
+ export previewargs='--vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate --shutter 69000000 --ev -8 --gain 1 --awbgains 3.2,2 --verbose 3 --exposure normal --roi 0,0,0,0  --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 0 '
+ 
+ 
+ #32 1 gain with wb
+ export previewargs='--vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate --shutter 32000000 --ev 0 --gain 1 --awb cloudy --verbose 3 --exposure normal --roi 0,0,0,0  --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 0 '
+ 
+ #48
+ export previewargs='--vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate --shutter 48000000 --ev 0 --gain 1 --awb cloudy --verbose 3 --exposure normal --roi 0,0,0,0  --sharpness 1 --saturation 1 --contrast 1 --brightness 0 --encoding jpg --raw 0 '
+ 
+ export previewargs='--shutter 64000000 --ev 0 --gain 1  --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate  '
+ export previewargs='--shutter 120000000 --ev 0 --gain 1  --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate  '
+ 
+ #blue
+ export previewargs='--awbgains 2.1,2.1   --saturation 1.2 --shutter 29000 --gain 1 --ev 0 --awb daylight --metering average --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate  '
+ #teal
+ export previewargs='--awbgains 1.1,2.1   --saturation 1.2 --shutter 29000 --gain 1 --ev 0 --awb daylight --metering average --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate  '
+ #green
+  export previewargs='--awbgains 2.1,1.1   --saturation 1.2 --shutter 29000 --gain 1 --ev 0 --awb daylight --metering average --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate  '
+
+#paper
+  export previewargs='--awbgains 4.1,1.1   --saturation 1.0 --shutter 29000 --gain 1 --ev 0 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate  '
+  #purple
+  export previewargs='--awbgains 4.1,2.1   --saturation 1.0 --shutter 39000 --gain 1 --ev -6 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate  '
+  
+  #cloudy
+  export previewargs='--awbgains 0,0   --saturation 1.0 --shutter 39000 --gain 1 --ev -6 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 99 --width 4056 --height 3040 --nopreview --immediate  '
+  
+  export previewargs='--awbgains 1.5,1.3   --saturation 1.0 --shutter 39000 --gain 1 --ev -8 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 92 --width 4056 --height 3040 --nopreview --immediate  '
+  
+  export previewargs='--contrast 1.4 --brightness -0.4 --awb daylight --saturation 1 --shutter 30000 --gain 1 --ev 0 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 92 --width 4056 --height 3040 --nopreview --immediate  '
+  
+  #morning building and mountains
+  
+  export previewargs='--contrast 1.45 --brightness -0.45 --awb daylight --saturation 1 --shutter 32000 --gain 1 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+  
+  export previewargs='--shutter 31000  --contrast 1.1 --brightness -0.37 --awb daylight --saturation 1 --gain 1 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+  
+  #daylight was too over exposed
+  export previewargs='--shutter 11000  --contrast 1.1 --brightness -0.27 --awb daylight --saturation 1 --gain 1 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+
+  #minimum night time  
+  export previewargs='--shutter 911000  --contrast 1.0 --brightness 0 --awb daylight --saturation 1 --gain 1 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+
+    #10x night 
+        export previewargs='--shutter 10000000  --contrast 1.0 --brightness 0 --awb daylight --saturation 1 --gain 1 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+
+    #Sky night blue, buildings are lit dim, slight bloom on lights
+        export previewargs='--shutter 10000000  --contrast 1.05 --brightness 0 --awb daylight --saturation 1 --gain 1 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        
+        #more contrast , a dark night slight red purple flows along buildings. slight bloom on lights
+        export previewargs='--shutter 16000000  --contrast 1.25 --brightness 0 --awb daylight --saturation 1 --gain 1 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        
+        #overblown blue, bloom slight, scene is dark.
+        export previewargs='--shutter 20000000  --contrast 1.25 --brightness 0 --awb daylight --saturation 1 --gain 1 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        #way dark, with bloom on lights, overblown blue. 
+        export previewargs='--shutter 20000000  --contrast 1.75 --brightness 0 --awb daylight --saturation 1 --gain 1 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        
+        #way too red
+        export previewargs='--shutter 30000000  --contrast 1.75 --brightness 0 --awb daylightZ --saturation 1 --gain 1 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        export previewargs='--shutter 30000000  --contrast 1.75 --brightness 0 --awbgains 2.1,2.1 --saturation 1 --gain 1 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        
+        #manual awbgains with faster shutter.
+        export previewargs='--shutter 13000000  --contrast 1.25 --brightness 0 --awbgains 2.1,2.1 --saturation 1 --gain 12 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        export previewargs='--shutter 13000000  --contrast 1.55 --brightness 0 --awbgains 2.1,2.1 --saturation 1 --gain 12 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        
+        #too much gain
+        export previewargs='--shutter 10000000  --contrast 1.75 --brightness 0 --awbgains 2.1,2.1 --saturation 1 --gain 8  --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        
+        export previewargs='--shutter 10000000  --contrast 1.55 --brightness 0.1 --awbgains 2.1,2.1 --saturation 1 --gain 6  --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        
+        export previewargs='--shutter 10000000  --contrast 1.55 --brightness 0 --awbgains 2.1,2.1 --saturation 1 --gain 3.6  --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        
+        
+        export previewargs='--shutter 20000  --contrast 1.3 --brightness 0 --saturation 1 --gain 1  --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        export previewargs='--shutter 7000  --contrast 1.5 --brightness 0 --saturation 1 --gain 1  --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        
+        #afternoon mountains sky fade.         
+        export previewargs='--shutter 4200  --contrast 1.75 --brightness 0 --saturation 1 --gain 1  --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        
+        #late afternoon mountains gone, all fogish
+        export previewargs='--shutter 4200  --contrast 1.75 --brightness 0 --saturation 1 --gain 1  --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        
+        #late afternoon mountains mack, with more contrast
+        export previewargs='--shutter 3000  --contrast 1.95 --brightness 0 --saturation 1 --gain 1  --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        
+        #
+        export previewargs='--shutter 3400  --contrast 1.75 --brightness 0 --saturation 1 --gain 1  --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        
+        #more contrast and mountains and black tree. blue buildings.
+        export previewargs='--shutter 2700  --contrast 2.75 --brightness 0 --saturation 1 --gain 1 --awbgains 4.9,4.9 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+
+        #better white balance
+        export previewargs='--shutter 2700  --contrast 2.75 --brightness 0 --saturation 1 --gain 1 --awbgains 3.3,1.5 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+
+        #        
+        export previewargs='--shutter 3500  --brightness 0 --saturation 1 --gain 1 --awbgains 3.9,1.4 --verbose 3  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate  '
+        export previewargs='--shutter 3500 --gain 1 --awbgains 3.9,1.4  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate'
+        
+        export previewargs='--shutter 1000 --gain 4 --awbgains 3.9,1.4  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate'
+        
+        #mountains blue, sky white, tree green, building gray blue.
+        #mild speed gain and manual awbgains,
+        export previewargs='--shutter 1000 --gain 4 --awbgains 3.9,1.4  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate'
+        
+        export previewargs='--shutter 2000 --gain 2.1 --awbgains 3.9,1.4  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate'
+        
+        export previewargs='--shutter 3000 --gain 1.4 --awbgains 3.9,1.4  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate'
+        
+        export previewargs='--shutter 4000  --awbgains 3.9,1.4  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate'
+        
+        #sun low angle 19:52
+        export previewargs='--shutter 4000  --awbgains 3.9,1.4  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate'
+        
+        #sun low angle 19:52
+        export previewargs='--shutter 80000 --awbgains 3.9,1.4  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate'
+        
+        
+        #sun low angle 20:27
+        export previewargs='--shutter 320000 --awbgains 3.9,1.4  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate'
+        
+        #sun low and at 20:30
+        export previewargs='--shutter 640000 --awbgains 3.9,1.4  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate'
+
+        #sun low and at 20:31
+        export previewargs='--shutter 1200000 --awbgains 3.9,1.4  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate'
+
+
+        #sun low and at 20:34
+        export previewargs='--shutter 2400000 --verbose 5 --awbgains 3.9,1.4  --encoding jpg --raw 0 --vflip --hflip --quality 96 --width 4056 --height 3040 --nopreview --immediate'
+
+        #sun low and at 20:39
+        export previewargs='--shutter 3200000 --verbose 5 --awbgains 3.9,1.4  --encoding jpg --raw 1 --vflip --hflip --quality 97 --width 4056 --height 3040 --nopreview --immediate'
+
+      #sun low and at 20:41
+        export previewargs='--shutter 4800000 --verbose 5 --awbgains 3.9,1.4  --encoding jpg --raw 1 --vflip --hflip --quality 97 --width 4056 --height 3040 --nopreview --immediate'
+
+export naptime="0.1"
+export sleeptime="0.0" 
+sleep $naptime 
+while sleep $sleeptime 
+  do nowtime=`date +"%Y%m%d%H%M%S"` ;
+    timefile="$timefolder/$title-$nowtime.jpg"
+    echo will run command: libcamera-still -o "$timefile"  $previewargs --metadata-format json --metadata "$timefile.json" --tuning-file /home/user/Documents/imx477.json ;
+    
+     libcamera-still -o "$timefile"  $previewargs --metadata-format json --metadata "$timefile.json" --tuning-file /home/user/Documents/imx477.json ;
+ #   date +"%Y%m%d%H%M%S"
+  #  date +"%Y%m%d%H%M%S"
+#   libcamera-raw -o "$timef/per-seattle-$nowtime.raw" ;
+    #killall xli ;
+    #xli -fillscreen -fullscreen -smooth -title "$timefile" "$timefile" & 
+    pcmanfm --set-wallpaper "$timefile" &    
+    exit;
+done
