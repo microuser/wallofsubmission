@@ -1,5 +1,10 @@
 #!/bin/bash
 
+exit 0
+#dont run this script.
+#you must understand the script
+
+
 speed=55 ;
 echo speed:$speed 
 
