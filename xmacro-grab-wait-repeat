@@ -1,0 +1,91 @@
+#!/bin/bash
+
+speed=55 ;
+echo speed:$speed 
+
+destinationFolder="/home/user/Download" ; 
+echo destinationFolder: $destinationFolder
+
+
+function WriteGrabFile()
+{
+#    sleep 1
+    cat << EOF > "$1"
+MotionNotify 141 12
+ButtonPress 1
+ButtonRelease 1
+MotionNotify 1011 18
+ButtonPress 1
+ButtonRelease 1
+MotionNotify 909 618
+ButtonPress 1
+MotionNotify 909 620
+MotionNotify 909 617
+MotionNotify 909 619
+MotionNotify 173 801
+MotionNotify 173 801
+ButtonRelease 1
+ButtonPress 5
+ButtonRelease 5
+MotionNotify 909 618
+ButtonPress 5
+ButtonRelease 5
+EOF
+
+}
+
+
+
+function LastModified () 
+{
+    duration_seconds=3
+    find "$destinationFolder" --mmin $(echo "$duration_seconds/60" | bc -l )
+
+}
+
+function CountFolderItems () 
+{
+    ls -l "$@" | wc -l
+}
+
+
+function SetAfterCount(){
+    afterCount=`CountFolderItems "$destinationFolder"`
+    echo afterCount:$afterCount
+}
+
+cd "$destinationFolder"
+WriteGrabFile xmacro.grab 
+#inotifywait -e close_write -t 10 --include '.*' "$destinationFolder" 
+
+SetAfterCount
+beforeCount="$afterCount"
+loopAgain="1"
+while [[ "$loopAgain" == "1" ]] ; 
+do
+    cat xmacro.grab | xmacroplay -d $speed ; 
+    SetAfterCount
+    echo before vs after: $beforeCount == $afterCount
+
+    if [[ "$(( "$afterCount - $beforeCount" ))" -gt "2" ]] ; then
+
+        #it could be a movie, look at screen? do movie thing?
+
+        #it could be too fast, reduce speed
+        echo it was the same.
+        exit 1
+    fi
+
+    beforeCount="$afterCount"
+    echo sleep ;
+    sleep .3 ;
+    echo over ;
+done 
+
+
+
+
+
+
+
+
